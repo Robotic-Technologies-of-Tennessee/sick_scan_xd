@@ -475,7 +475,7 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
 
   std::string cloud_topic = "cloud";
   rosDeclareParam(nhPriv, "hostname", "192.168.0.4");
-  rosDeclareParam(nhPriv, "imu_enable", false);
+  rosDeclareParam(nhPriv, "imu_enable", true);
   rosDeclareParam(nhPriv, "imu_topic", "imu");
   rosDeclareParam(nhPriv, "cloud_topic", cloud_topic);
   if (doInternalDebug)
@@ -485,7 +485,7 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
     rossimu_settings(*nhPriv);  // just for tiny simulations under Visual C++
 #else
       rosSetParam(nhPriv, "hostname", "192.168.0.4");
-      rosSetParam(nhPriv, "imu_enable", false);
+      rosSetParam(nhPriv, "imu_enable", true);
       rosSetParam(nhPriv, "imu_topic", "imu");
       rosSetParam(nhPriv, "cloud_topic", "cloud");
 #endif
@@ -560,7 +560,6 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
   // Optional timestamp mode:
   // TICKS_TO_SYSTEM_TIMESTAMP = 0, // default: convert lidar ticks in microseconds to system timestamp by software-pll
   // TICKS_TO_MICROSEC_OFFSET_TIMESTAMP = 1 // optional tick-mode: convert lidar ticks in microseconds to timestamp by 1.0e-6*(curtick-firstTick)+firstSystemTimestamp;
-  // TICKS_TO_LIDAR_TIMESTAMP = 2 // optional tick-mode: convert lidar ticks in microseconds to lidar timestamp by sec = tick/1000000, nsec = 1000 * (tick % 1000000)
   int tick_to_timestamp_mode = 0;
   rosDeclareParam(nhPriv, "tick_to_timestamp_mode", tick_to_timestamp_mode);
   rosGetParam(nhPriv, "tick_to_timestamp_mode", tick_to_timestamp_mode);
@@ -700,8 +699,11 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
   //sick_scan_xd::SickScanConfig cfg;
   //std::chrono::system_clock::time_point timestamp_rosOk = std::chrono::system_clock::now();
 
+//  std::cout << "\nStarting Scanner finalize loop" << std::endl;
   while (rosOk() && s_runState != scanner_finalize)
   {
+//std::cout << "\nIn Scanner finalize loop" << std::endl;
+
     //if (rosOk())
     //  timestamp_rosOk = std::chrono::system_clock::now();
     //else if (std::chrono::duration<double>(std::chrono::system_clock::now() - timestamp_rosOk).count() > 2 * 1000) // 2 seconds timeout to stop the scanner
@@ -710,10 +712,12 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
     switch (s_runState)
     {
       case scanner_init:
+//std::cout << "\nIn Case scanner init..." << std::endl;
         setDiagnosticStatus(SICK_DIAGNOSTIC_STATUS::INIT, "sick_scan_xd initializing " + hostname + ":" + port);
         ROS_INFO_STREAM("Start initialising scanner [Ip: " << hostname  << "] [Port:" << port << "]");
         // attempt to connect/reconnect
         DELETE_PTR(s_scanner);  // disconnect scanner
+        std::cout << "\nDisconnected from scanner..." << std::endl;
         if (useTCP)
         {
           s_scanner = new sick_scan_xd::SickScanCommonTcp(hostname, port, timelimit, nhPriv, parser, colaDialectId);
@@ -724,6 +728,7 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
           exit(-1);
         }
 
+//        std::cout << "\nPast useTCP loop..." << std::endl;
         if (emulSensor)
         {
           s_scanner->setEmulSensor(true);
@@ -735,11 +740,14 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
           continue;
         }
 
+ //       std::cout << "\nSetting ROS Params.." << std::endl;
         // Start ROS services
         rosDeclareParam(nhPriv, "start_services", start_services);
         rosGetParam(nhPriv, "start_services", start_services);
+        
         if (true == start_services)
         {
+//            std::cout << "\nStarting ROS services..." << std::endl;
             services = new sick_scan_xd::SickScanServices(nhPriv, s_scanner, parser->getCurrentParamPtr());
             ROS_INFO("SickScanServices: ros services initialized");
         }
@@ -749,6 +757,7 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
 
         if (exit_code == sick_scan_xd::ExitSuccess) // OK -> loop again
         {
+//          std::cout << "\nNO EXIT CODE AT THIS TIME" << std::endl;
           if (changeIP)
           {
             s_runState = scanner_finalize;
@@ -769,10 +778,12 @@ void mainGenericLaserInternal(int argc, char **argv, std::string nodeName, rosNo
         {
           s_runState = scanner_init; // If there was an error, try to restart scanner
           setDiagnosticStatus(SICK_DIAGNOSTIC_STATUS::INIT, "sick_scan_xd initializing " + hostname + ":" + port);
+          std::cout << "\nTrying to Restart sensor..." << std::endl;
         }
         break;
 
       case scanner_run:
+//std::cout << "\nIn Case Scanner Run" << std::endl;
         if (exit_code == sick_scan_xd::ExitSuccess) // OK -> loop again
         {
           if(do_ros_spin)

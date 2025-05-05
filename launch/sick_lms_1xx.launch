@@ -6,12 +6,12 @@
     <arg name="cloud_topic" default="cloud"/>
     <arg name="laserscan_topic" default="scan"/>
     <arg name="frame_id" default="cloud"/>
-    <arg name="sw_pll_only_publish" default="true"/>
+    <arg name="sw_pll_only_publish" default="false"/>
     <arg name="nodename" default="sick_lms_1xx"/>
     <arg name="add_transform_xyz_rpy" default="0,0,0,0,0,0"/>
     <arg name="add_transform_check_dynamic_updates" default="false"/> <!-- Note: dynamical updates of parameter add_transform_xyz_rpy can decrease the performance and is therefor deactivated by default -->
-    <arg name="encoder_mode" default="-1"/> <!-- Encoder settings (default: -1, i.e. not set): 0: Off, 1: Single increment, 2: Direction recognition phase, 3: Direction recognition level, 4: Fixed increment speed/ticks (LMS4000 only) -->
-    <arg name="tf_publish_rate" default="10.0" />                     <!-- Rate to publish TF messages in hz, use 0 to deactivate TF messages -->
+    <arg name="encoder_mode" default="0"/> <!-- Encoder settings (default: -1, i.e. not set): 0: Off, 1: Single increment, 2: Direction recognition phase, 3: Direction recognition level, 4: Fixed increment speed/ticks (LMS4000 only) -->
+    <arg name="tf_publish_rate" default="0.0" />                     <!-- Rate to publish TF messages in hz, use 0 to deactivate TF messages -->
     <node name="$(arg nodename)" pkg="sick_scan_xd" type="sick_generic_caller" respawn="false" output="screen" required="true">
         <param name="intensity" type="bool" value="False"/>
         <param name="intensity_resolution_16bit" type="bool" value="false"/>
@@ -43,10 +43,10 @@
         <param name="timelimit" type="int" value="5"/>
         <param name="sw_pll_only_publish" type="bool" value="$(arg sw_pll_only_publish)"/>
         <param name="use_generation_timestamp" type="bool" value="true"/> <!-- Use the lidar generation timestamp (true, default) or send timestamp (false) for the software pll converted message timestamp -->
-        <param name="start_services" type="bool" value="True"/> <!-- start ros service for cola commands -->
-        <param name="activate_lferec" type="bool" value="True"/> <!-- activate field monitoring by lferec messages -->
-        <param name="activate_lidoutputstate" type="bool" value="True"/> <!-- activate field monitoring by lidoutputstate messages -->
-        <param name="activate_lidinputstate" type="bool" value="True"/> <!-- activate field monitoring by lidinputstate messages -->
+        <param name="start_services" type="bool" value="False"/> <!-- start ros service for cola commands -->
+        <param name="activate_lferec" type="bool" value="False"/> <!-- activate field monitoring by lferec messages -->
+        <param name="activate_lidoutputstate" type="bool" value="False"/> <!-- activate field monitoring by lidoutputstate messages -->
+        <param name="activate_lidinputstate" type="bool" value="False"/> <!-- activate field monitoring by lidinputstate messages -->
         <param name="min_intensity" type="double" value="0.0"/> <!-- Set range of LaserScan messages to infinity, if intensity < min_intensity (default: 0) -->
         <param name="encoder_mode" type="int" value="$(arg encoder_mode)"/> <!-- Encoder settings (default: -1, i.e. not set): 0: Off, 1: Single increment, 2: Direction recognition phase, 3: Direction recognition level, 4: Fixed increment speed/ticks (LMS4000 only) -->
         <param name="scandatacfg_timingflag" type="int" value="-1"/> <!-- Set timing flag LMDscandatacfg (LMS-1XX, LMS-1XXX, LMS-4XXX, LMS-5XX, MRS-1XXX, MRS-6XXX, NAV-2XX, TIM-240, TIM-4XX, TIM-5XX, TIM-7XX, TIM-7XXS): -1: use default (off for TiM-240, otherwise on), 0: do not send time information, 1: send time information -->
@@ -101,10 +101,7 @@
         <!-- 
         Optional mode to convert lidar ticks to ros- resp. system-timestamps:
         tick_to_timestamp_mode = 0 (default): convert lidar ticks in microseconds to system timestamp by software-pll
-        tick_to_timestamp_mode = 1 (optional tick-mode): convert lidar ticks in microseconds to timestamp by 1.0e-6*(curtick-firstTick)+firstSystemTimestamp
-        tick_to_timestamp_mode = 2 (optional tick-mode): convert lidar ticks in microseconds directly into a lidar timestamp by sec = tick/1000000, nsec = 1000*(tick%1000000)
-        Note: Using tick_to_timestamp_mode = 2, the timestamps in ROS message headers will be in lidar time, not in system time. Lidar and system time can be very different.
-        Using tick_to_timestamp_mode = 2 might cause unexpected results or error messages. We recommend using tick_to_timestamp_mode = 2 for special test cases only.
+        tick_to_timestamp_mode = 1 (optional tick-mode): convert lidar ticks in microseconds to timestamp by 1.0e-6*(curtick-firstTick)+firstSystemTimestamp;
         -->
         <param name="tick_to_timestamp_mode" type="int" value="0"/>
 

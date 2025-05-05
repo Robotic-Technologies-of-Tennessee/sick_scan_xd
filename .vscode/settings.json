@@ -1,0 +1,23 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/isaac/examples/ros2_control_demos/install/ros2_control_demo_testing/lib/python3.10/site-packages",
+        "/home/isaac/ROS/ros2_ws/install/pioneer3at/local/lib/python3.10/dist-packages",
+        "/home/isaac/ROS/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages",
+        "/home/isaac/Official_Tutorials/navigation2_tutorials/install/nav2_gps_waypoint_follower_demo/lib/python3.10/site-packages",
+        "/home/isaac/program_files/BehaviorTree.ROS2/install/btcpp_ros2_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/isaac/examples/ros2_control_demos/install/ros2_control_demo_testing/lib/python3.10/site-packages",
+        "/home/isaac/ROS/ros2_ws/install/pioneer3at/local/lib/python3.10/dist-packages",
+        "/home/isaac/ROS/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages",
+        "/home/isaac/Official_Tutorials/navigation2_tutorials/install/nav2_gps_waypoint_follower_demo/lib/python3.10/site-packages",
+        "/home/isaac/program_files/BehaviorTree.ROS2/install/btcpp_ros2_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "files.associations": {
+        "limits": "cpp"
+    }
+}

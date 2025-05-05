@@ -110,6 +110,7 @@ namespace sick_scan_xd
             range_modified = false;
             if ((m_settings != RANGE_FILTER_DEACTIVATED) && (range < m_range_min || range > m_range_max)) // range not in [range_min, range_max], apply filter
             {
+                //std::cout << "Range Filter Activated!" << std::endl;
                 switch(m_settings)
                 {
                     case RANGE_FILTER_DEACTIVATED:  // do not apply range filter
@@ -122,7 +123,9 @@ namespace sick_scan_xd
                         range_modified = true;
                         break;
                     case RANGE_FILTER_TO_RANGE_MAX: // set range = range_max, if range is not within [range_min, range_max]
-                        range = m_range_max;
+                        //range = m_range_max;
+                       // std::cout << "Setting Max points to infinity!" << std::endl;
+                        range = std::numeric_limits<float>::infinity();
                         range_modified = true;
                         break;
                     case RANGE_FILTER_TO_FLT_MAX:   // set range = FLT_MAX, if range is not within [range_min, range_max]

@@ -827,7 +827,7 @@ namespace sick_scan_xd
     if (true == bRet)
     {
         notifyImuListener(nh, &imuMsg_);
-        rosPublish(this->commonPtr->imuScan_pub_, imuMsg_);
+        //rosPublish(this->commonPtr->imuScan_pub_, imuMsg_);
     }
     return (exitCode);
 

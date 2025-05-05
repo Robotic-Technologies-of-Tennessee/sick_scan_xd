@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/isaac/examples/ros2_control_demos/install/ros2_control_demo_example_11/include/**",
+        "/home/isaac/ROS/ros2_ws/install/custom_interfaces/include/**",
+        "/home/isaac/Official_Tutorials/navigation2_tutorials/install/nav2_straightline_planner/include/**",
+        "/home/isaac/program_files/BehaviorTree.ROS2/install/behaviortree_ros2/include/**",
+        "/home/isaac/program_files/BehaviorTree.ROS2/install/btcpp_ros2_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/isaac/ROS/fodbot_ws/src/audibot/audibot_controller/include/**",
+        "/home/isaac/ROS/fodbot_ws/src/audibot/audibot_gazebo/include/**",
+        "/home/isaac/ROS/fodbot_ws/src/sick_scan_xd/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
