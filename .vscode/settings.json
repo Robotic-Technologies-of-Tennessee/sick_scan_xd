@@ -19,5 +19,6 @@
     ],
     "files.associations": {
         "limits": "cpp"
-    }
+    },
+    "ROS2.distro": "jazzy"
 }
