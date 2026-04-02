@@ -23,14 +23,14 @@ def generate_launch_description():
         node = Node(
             package='sick_scan_xd',
             node_executable='sick_generic_caller',
-            output='screen',
+            output='log',
             arguments=node_arguments
         )
     else: # ROS versions eloquent and earlier require "node_executable", ROS foxy and later use "executable"
         node = Node(
             package='sick_scan_xd',
             executable='sick_generic_caller',
-            output='screen',
+            output='log',
             arguments=node_arguments
         )
     
